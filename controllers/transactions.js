@@ -13,62 +13,7 @@ const create = async (req, res) => {
 const index = async (req, res) => {
     const allTransactions = await Transaction.find();
     console.log(`allTransactions: ${allTransactions}`);
-
-    const data = {
-        transactions: allTransactions,
-        daily: {}
-    }
-
-        // Get unique tickers in one line
-    const ticketArr = [...new Set(allTransactions.map(t => t.ticker))];
-    
-    console.log(`tickerArr: ${ticketArr.length}`);
-
-    // Fetch all ticker data in parallel
-    await Promise.all(ticketArr.map(async (ticker) => {
-        console.log(`ticker: ${ticker}`)
-        const apiKey = process.env.ALPHA_KEY;
-        const fetchStr = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${apiKey}`
-        console.log(`fetchStr: ${fetchStr}`);
-        
-        const apiData = await fetch(fetchStr);
-        const apiResponse = await apiData.json();
-        data.daily[ticker] = apiResponse["Time Series (Daily)"];
-    }));
-
-    console.log(JSON.stringify(data));
-    res.json(data);
-
-
-    // //fetch daily price from finnhub
-    // const ticketArr = () => {
-    //     for (const transaction of allTransactions) {
-
-    //     }
-    // };
-    // allTransactions.forEach(async (transaction) => {
-    //     const ticker = transaction.ticker;
-    //     console.log(`ticker: ${ticker} logical: ${ticketArr.indexOf(ticker)}`)
-    //     ticketArr.indexOf(ticker) > 0 ? '' : ticketArr.push(ticker);
-    // });
-
-    // console.log(`tickerArr: ${ticketArr.length}`);
-
-    // ticketArr.forEach(async (ticker) => {
-    //     console.log(`ticker: ${ticker}`)
-    //     const apiKey = process.env.ALPHA_KEY;
-    //     const fetchStr = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${apiKey}`
-    //     console.log(`fetchStr: ${fetchStr}`);
-        
-    //     const apiData = await fetch(fetchStr);
-    //     const dataJson = await apiData.json();
-    //     const dataObj = dataJson["Time Series (Daily)"];
-    //     console.log(`dataObj: ${JSON.stringify(dataObj)}`);
-    //     data.daily[ticker] = dataObj;
-    // });
-
-    // console.log(JSON.stringify(data));
-    // res.json(data);
+    res.json(allTransactions);
 }
 
 const show = async (req, res) => {
