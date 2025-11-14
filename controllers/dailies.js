@@ -30,13 +30,16 @@ const index = async (req, res) => {
     data.symbol = symbol;
     data.longName = longName;
     data.previousClose = previousClose;
+    data.values = [] // Root Array of high/low/close values
 
     for (let i = 0; i < recordCount; i++) {
-        data[timestampArr[i]] = {
+        const singleTimestamp = {
+            timestampId: timestampArr[i],
             high: highArr[i],
             low: lowArr[i],
             close: closeArr[i]
         }
+        data.values.push(singleTimestamp)
     }
 
     console.log(`Data being sent: `, data)
