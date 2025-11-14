@@ -7,6 +7,8 @@ const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
+const cors = require("cors")
+
 const port = process.env.PORT ? process.env.PORT : "3000";
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -15,6 +17,7 @@ mongoose.connection.on("connected", () => {
 })
 
 app.use(morgan("dev"));
+app.use(cors());
 app.use(express.json());
 
 //interact with transaction data (owned stocks)
