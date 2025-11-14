@@ -15,16 +15,31 @@ mongoose.connection.on("connected", () => {
 })
 
 app.use(morgan("dev"));
+app.use(express.json());
 
+//interact with transaction data (owned stocks)
+const transactionsCtrl = require('./controllers/transactions');
+app.get('/transactions', transactionsCtrl.index);
+app.post('/transactions', transactionsCtrl.create);
+app.get('/transactions/:transactionId', transactionsCtrl.show);
+app.put('/transactions/:transactionId', transactionsCtrl.update);
+app.delete('/transactions/:transactionId', transactionsCtrl.deleteTransaction);
 
+//interact with targets data (watchlist)
+const targetsCtrl = require('./controllers/targets');
+app.get('/targets', targetsCtrl.index);
+app.post('/targets', targetsCtrl.create);
+app.get('/targets/:targetId', targetsCtrl.show);
+app.put('/targets/:targetId', targetsCtrl.update);
+app.delete('/targets/:targetId', targetsCtrl.deleteTarget);
 
-// MVC Layout Below
-
-// const fruitsCtrl = require('./controllers/fruits');
-// app.get('/fruits', fruitsCtrl.index);
-
-
-
+//interact with user data
+const usersCtrl = require('./controllers/users');
+app.get('/users', usersCtrl.index);
+app.post('/users', usersCtrl.create);
+app.get('/users/:userId', usersCtrl.show);
+app.put('/users/:userId', usersCtrl.update);
+app.delete('/users/:userId', usersCtrl.deleteUser);
 
 app.listen(port, () => {
   console.log(`The app is listening on port ${port}`);
