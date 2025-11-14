@@ -41,6 +41,24 @@ app.get('/users/:userId', usersCtrl.show);
 app.put('/users/:userId', usersCtrl.update);
 app.delete('/users/:userId', usersCtrl.deleteUser);
 
+
+//pull dailies data
+const dailiesCtrl = require('./controllers/dailies');
+app.get('/dailies/:ticker', dailiesCtrl.index);
+
+//pull patents data
+const patentsCtrl = require('./controllers/patents');
+app.get('/patents/:ticker', patentsCtrl.index);
+
+//pull patents data
+const visasCtrl = require('./controllers/visas');
+app.get('/visas/:ticker', visasCtrl.index);
+
+//pull patents data
+const lobbiesCtrl = require('./controllers/lobbies');
+app.get('/lobbies/:ticker', lobbiesCtrl.index);
+
+
 app.listen(port, () => {
   console.log(`The app is listening on port ${port}`);
 });
