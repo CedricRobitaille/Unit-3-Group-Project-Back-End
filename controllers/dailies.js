@@ -5,7 +5,23 @@ const index = async (req, res) => {
     const ticker = req.params.ticker;
     // const apiKey = process.env.ALPHA_KEY;
     const baseUrl = `https://query1.finance.yahoo.com/v8/finance/chart/`
-    const apiData = await fetch(`${baseUrl}${ticker}`);
+
+    //generate start and end dates
+     // const startTimestamp = startTimestamp.setDate(date.getDate());
+    const recordCount = req.query.recordCount ? req.query.recordCount : 100;
+
+    //fix end date to most recent friday 
+    //this will still fail if holiday as the market will be closed
+    const dateToday = new Date();
+    const day = dateToday.getDay();
+    const offset = day === 0 ? -2 : day === 6 ? -1 : 0;
+    const endDate = Math.floor(dateToday.setDate(dateToday.getDate() + offset)/ 1000);
+    console.log(`endDate: ${endDate}, day: ${day}, offset: ${offset}, getDate: ${dateToday.getDate()}, fixed date: ${dateToday.setDate(dateToday.getDate() + offset)}`)
+    const startDate = endDate - (recordCount * 24 * 60 * 60);
+    console.log(`startDate: ${startDate}, endDate: ${endDate}`);
+    console.log(`url: ${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`)
+    //`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=1d`;
+    const apiData = await fetch(`${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`);
     const apiDataJSON = await apiData.json();
    
     
@@ -22,7 +38,7 @@ const index = async (req, res) => {
     // console.log(`highArr: ${highArr}`);
 
     //calculate date range for data
-    const recordCount = req.query.recordCount ? req.query.recordCount : 100;
+    // const recordCount = req.query.recordCount ? req.query.recordCount : 100;
 
     //filter first x days of data (recordCount)
     const data = {};
@@ -32,7 +48,7 @@ const index = async (req, res) => {
     data.previousClose = previousClose;
     data.values = [] // Root Array of high/low/close values
 
-    for (let i = 0; i < recordCount; i++) {
+    for (let i = 0; i < timestampArr.length; i++) {
         const singleTimestamp = {
             timestampId: timestampArr[i],
             high: highArr[i],
