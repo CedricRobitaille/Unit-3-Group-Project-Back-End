@@ -12,16 +12,18 @@ const index = async (req, res) => {
 
     //fix end date to most recent friday 
     //this will still fail if holiday as the market will be closed
-    const dateToday = new Date();
-    const day = dateToday.getDay();
-    const offset = day === 0 ? -2 : day === 6 ? -1 : 0;
-    const endDate = Math.floor(dateToday.setDate(dateToday.getDate() + offset)/ 1000);
-    console.log(`endDate: ${endDate}, day: ${day}, offset: ${offset}, getDate: ${dateToday.getDate()}, fixed date: ${dateToday.setDate(dateToday.getDate() + offset)}`)
-    const startDate = endDate - (recordCount * 24 * 60 * 60);
-    console.log(`startDate: ${startDate}, endDate: ${endDate}`);
-    console.log(`url: ${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`)
-    //`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=1d`;
-    const apiData = await fetch(`${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`);
+    // const dateToday = new Date();
+    // const day = dateToday.getDay();
+    // const offset = day === 0 ? -2 : day === 6 ? -1 : 0;
+    // const endDate = Math.floor(dateToday.setDate(dateToday.getDate() + offset)/ 1000);
+    // console.log(`endDate: ${endDate}, day: ${day}, offset: ${offset}, getDate: ${dateToday.getDate()}, fixed date: ${dateToday.setDate(dateToday.getDate() + offset)}`)
+    // const startDate = endDate - (recordCount * 24 * 60 * 60);
+    // console.log(`startDate: ${startDate}, endDate: ${endDate}`);
+    // console.log(`url: ${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`)
+    // //`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=1d`;
+    const apiData = await fetch(`${baseUrl}${ticker}`)
+    
+    // const apiData = await fetch(`${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`);
     const apiDataJSON = await apiData.json();
    
     
