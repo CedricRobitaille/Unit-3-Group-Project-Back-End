@@ -21,7 +21,7 @@ const index = async (req, res) => {
     
     const symbol = apiDataJSON.chart.result[0].meta.symbol; // ex: AAPL
     const longName = apiDataJSON.chart.result[0].meta.longName; // ex: Apple, Inc.
-    const previousClose = apiDataJSON.chart.result[0].meta.previousClose; // ex: 272.95
+    const previousClose = apiDataJSON.chart.result[0].meta.chartPreviousClose; // ex: 272.95
 
     //put metrics into arrays
     const timestampArr = apiDataJSON.chart.result[0].timestamp.reverse();
