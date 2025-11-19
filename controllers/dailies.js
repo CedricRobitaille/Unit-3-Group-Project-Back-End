@@ -10,18 +10,10 @@ const index = async (req, res) => {
      // const startTimestamp = startTimestamp.setDate(date.getDate());
     const recordCount = req.query.recordCount ? req.query.recordCount : 100;
 
-    //fix end date to most recent friday 
-    //this will still fail if holiday as the market will be closed
-    // const dateToday = new Date();
-    // const day = dateToday.getDay();
-    // const offset = day === 0 ? -2 : day === 6 ? -1 : 0;
-    // const endDate = Math.floor(dateToday.setDate(dateToday.getDate() + offset)/ 1000);
-    // console.log(`endDate: ${endDate}, day: ${day}, offset: ${offset}, getDate: ${dateToday.getDate()}, fixed date: ${dateToday.setDate(dateToday.getDate() + offset)}`)
-    // const startDate = endDate - (recordCount * 24 * 60 * 60);
-    // console.log(`startDate: ${startDate}, endDate: ${endDate}`);
-    // console.log(`url: ${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`)
-    // //`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=1d`;
-    const apiData = await fetch(`${baseUrl}${ticker}`)
+    const period2 = Math.floor(new Date().getTime()/1000);
+    const period1 = period2 - (100 * 24 * 60 * 60);
+    const apiData = await fetch(`${baseUrl}${ticker}?period1=${period1}&period2=${period2}&interval=1d`)
+    console.log('apiData', apiData);
     
     // const apiData = await fetch(`${baseUrl}${ticker}?period1=${startDate}&period2=${endDate}&interval=1d`);
     const apiDataJSON = await apiData.json();
@@ -32,10 +24,10 @@ const index = async (req, res) => {
     const previousClose = apiDataJSON.chart.result[0].meta.previousClose; // ex: 272.95
 
     //put metrics into arrays
-    const timestampArr = apiDataJSON.chart.result[0].timestamp;
-    const closeArr = apiDataJSON.chart.result[0].indicators.quote[0].close;
-    const highArr = apiDataJSON.chart.result[0].indicators.quote[0].high;
-    const lowArr = apiDataJSON.chart.result[0].indicators.quote[0].low;
+    const timestampArr = apiDataJSON.chart.result[0].timestamp.reverse();
+    const closeArr = apiDataJSON.chart.result[0].indicators.quote[0].close.reverse();
+    const highArr = apiDataJSON.chart.result[0].indicators.quote[0].high.reverse();
+    const lowArr = apiDataJSON.chart.result[0].indicators.quote[0].low.reverse();
 
     // console.log(`highArr: ${highArr}`);
 
