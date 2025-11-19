@@ -33,7 +33,6 @@ const update = async (req, res) => {
 
 //DELETE
 const deleteTarget = async (req, res) => {
-    console.log("PARAMS GO HERE", req.params.targetId);
     const ticker = req.params.targetId
     const deletedTarget = await Target.deleteOne({ ticker: ticker });
     res.json(deletedTarget);
