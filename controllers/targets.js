@@ -4,7 +4,7 @@ const Target = require('../models/target');
 //CREATE
 const create = async (req, res) => {
     const ticker = req.body.targetName
-    const newTarget = await Target.create({ticker: ticker})
+    const newTarget = await Target.create({ ticker: ticker })
     console.log(`newTarget: ${newTarget}`);
     res.json(newTarget);
 }
