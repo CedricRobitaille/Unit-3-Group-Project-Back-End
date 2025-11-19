@@ -3,7 +3,8 @@ const Target = require('../models/target');
 
 //CREATE
 const create = async (req, res) => {
-    const newTarget = await Target.create(req.body)
+    const ticker = req.body.targetName
+    const newTarget = await Target.create({ ticker: ticker })
     console.log(`newTarget: ${newTarget}`);
     res.json(newTarget);
 }
@@ -32,7 +33,9 @@ const update = async (req, res) => {
 
 //DELETE
 const deleteTarget = async (req, res) => {
-    const deletedTarget = await Target.findByIdAndDelete(req.params.targetId);
+    console.log("PARAMS GO HERE", req.params.targetId);
+    const ticker = req.params.targetId
+    const deletedTarget = await Target.deleteOne({ ticker: ticker });
     res.json(deletedTarget);
 
 }
